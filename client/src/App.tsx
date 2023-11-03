@@ -5,9 +5,9 @@ function App() {
 
 
   return (
-<div>
-<EntryForm />
-</div>
+    <div>
+    <EntryForm />
+    </div>
 
   )
 }

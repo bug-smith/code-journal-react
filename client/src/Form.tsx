@@ -1,35 +1,71 @@
-import placeholder from './assets/placeholder-image-square.jpg';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { addEntry } from './data.ts';
+import placeholder from './assets/;placeholder-image-square.jpg';
+
 
 export function Form() {
+
+  const [titleInput, setTitleInput] = useState<string>('');
+  const [srcInput, setSrcInput] = useState<string>('');
+  const [textArea, setTextArea] = useState<string>('');
+  const [showEntries, setShowEntries] = useState(true);
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formValues = {
+      title: titleInput,
+      photoUrl: srcInput,
+      notes: textArea,
+    };
+    addEntry(formValues)
+  }
+
   return (
-    <div id="entryForm">
-      <div className="row margin-bottom-1">
-        <ShowImage />
-        <EntryInputs />
-      </div>
-      <NoteInput />
+    <div className={showEntries ? 'hidden' : ''} id="entryForm">
+      <form onSubmit={handleSubmit}>
+        <div className="row margin-bottom-1">
+
+        <ShowImage srcInput={srcInput}/>
+        <EntryInputs titleInput={titleInput} srcInput={srcInput} onTitleChange={(e) => setTitleInput(e.target.value)} onSrcChange={(e) => setSrcInput(e.target.value)} />
+        </div>
+        <NoteInput />
+        <Button />
+      </form>
+
     </div>
   );
 }
 
-function ShowImage() {
+type ShowImageProps = {
+  srcInput: string;
+}
+
+function ShowImage({ srcInput }: ShowImageProps) {
   return (
       <div className="column-half">
-        <img src={placeholder} className="form-image input-b-radius" />
+        <img src={srcInput} className="form-image input-b-radius" />
       </div>
   );
 }
 
-function EntryInputs() {
+type EntryInputsProps = {
+  titleInput: string;
+  srcInput: string;
+  onTitleChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onSrcChange: (e: ChangeEvent<HTMLInputElement>) => void;
+}
+
+function EntryInputs({titleInput, srcInput, onTitleChange, onSrcChange }: EntryInputsProps) {
   return (
     <div className="column-half">
       <label className="margin-bottom-1 d-block">
         Title
-        <input className="input-b-color text-padding input-b-radius purple-outline input-height margin-bottom-2 d-block width-100" />
+        <input value={titleInput} onChange={onTitleChange} className="input-b-color text-padding input-b-radius purple-outline input-height margin-bottom-2 d-block width-100" />
       </label>
       <label className="margin-bottom-1 d-block">
         Photo URL
-        <input className="input-b-color text-padding input-b-radius purple-outline input-height margin-bottom-2 d-block width-100" />
+        <input value={srcInput} onChange={onSrcChange} className="input-b-color text-padding input-b-radius purple-outline input-height margin-bottom-2 d-block width-100" />
       </label>
     </div>
   );
@@ -52,4 +88,9 @@ function NoteInput() {
       </div>
     </div>
   );
+}
+
+
+function Button() {
+  return <button type="submit">Save</button>
 }
