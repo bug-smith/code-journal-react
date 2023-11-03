@@ -1,40 +1,41 @@
-import { readEntries } from './data.ts';
+import { readEntries, Entry } from './data.ts';
 
 export function ShowEntries() {
+  const entries = readEntries();
+
   return (
     <div className="row">
       <div className="column-full"></div>
       <ul className="entry-ul" id="entryUl">
-        {}
+      {entries.map((entry: any)=> {
+        return(
+        <Entry
+        entry={entry} />
+      )})}
       </ul>
     </div>
   );
 }
 
-function Entry() {
-  const entries = readEntries();
-  const ReadEntries = entries.map((entry) => {
-    return <li key={entry.entryId}>
+type EntryProps = {
+  entry: Entry[];
+}
 
-    </li>;
-  });
-  return (
-    <li key={entry.entryId}>
-      <div className="row">
-        <div className="column-half">
-          <img className="input-b-radius form-image" src="" alt="" />
-        </div>
-          <div className="column-half">
-            <div className="row">
-              <div className="column-full d-flex justify-between">
-                <h3>This is test Title</h3>
-                <i className='fa-solid fa-pencil'></i>
+function Entry({entry}: EntryProps) {
+    return (
+        <li key={entry.enrtyId}>
+          <div className="row">
+            <div className="column-half">
+              <img className="input-b-radius form-image" src={entry.name} alt={entry.name} />
+            </div>
+            <div className="column-half">
+              <div className="row">
+                <div className="column-full d-flex justify-between">
+                  <h3>This is test Title</h3>
+                </div>
               </div>
             </div>
-          <p></p>
-        </div>
-      </div>
-    </li>;
-  )
-
-}
+          </div>
+        </li>
+    );
+  }
