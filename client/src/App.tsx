@@ -1,15 +1,19 @@
 import './App.css'
-import { EntryForm } from './EntryForm'
+import './css/layout.css';
+import './css/styles.css';
+import './css/reset.css';
+import { Form } from './Form';
+import { Header } from './Header';
 
 function App() {
 
 
   return (
     <div>
-    <EntryForm />
+      <Header />
+      <Form />
     </div>
-
-  )
+  );
 }
 
 export default App
