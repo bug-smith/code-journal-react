@@ -1,15 +1,18 @@
-import { readEntries, Entry } from './data.ts';
+import { Entry } from './data.ts';
 
-export function ShowEntries() {
-  const entries = readEntries();
+type ShowEntriesProps = {
+  entries: Entry[]
+}
+export function ShowEntries({entries}: ShowEntriesProps) {
+
 
   return (
     <div className="row">
       <div className="column-full"></div>
       <ul className="entry-ul" id="entryUl">
-      {entries.map((entry: any)=> {
+      {entries.map((entry)=> {
         return(
-        <Entry
+        <SingleEntry
         entry={entry} />
       )})}
       </ul>
@@ -18,24 +21,29 @@ export function ShowEntries() {
 }
 
 type EntryProps = {
-  entry: Entry[];
+  entry: Entry;
 }
 
-function Entry({entry}: EntryProps) {
+function SingleEntry({entry}: EntryProps) {
     return (
-        <li key={entry.enrtyId}>
-          <div className="row">
-            <div className="column-half">
-              <img className="input-b-radius form-image" src={entry.name} alt={entry.name} />
-            </div>
-            <div className="column-half">
-              <div className="row">
-                <div className="column-full d-flex justify-between">
-                  <h3>This is test Title</h3>
-                </div>
+      <li key={entry.entryId}>
+        <div className="row">
+          <div className="column-half">
+            <img
+              className="input-b-radius form-image"
+              src={entry.photoUrl}
+              alt={entry.title}
+            />
+          </div>
+          <div className="column-half">
+            <div className="row">
+              <div className="column-full d-flex justify-between">
+                <h3>{entry.title}</h3>
+                <i className="fa-solid fa-pencil"></i>
               </div>
             </div>
           </div>
-        </li>
+        </div>
+      </li>
     );
   }

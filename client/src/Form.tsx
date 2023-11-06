@@ -1,15 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { addEntry } from './data.ts';
+import { addEntry, Entry} from './data.ts';
 import placeholder from './assets/;placeholder-image-square.jpg';
 
+type FormProps = {
+  entries: Entry[]
+}
 
-export function Form() {
+export function Form({entries}:FormProps) {
 
   const [titleInput, setTitleInput] = useState<string>('');
   const [srcInput, setSrcInput] = useState<string>('');
   const [textArea, setTextArea] = useState<string>('');
-  const [showEntries, setShowEntries] = useState(true);
+  const [showEntries, setShowEntries] = useState(false);
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -18,7 +21,11 @@ export function Form() {
       photoUrl: srcInput,
       notes: textArea,
     };
-    addEntry(formValues)
+    console.log(formValues.title, titleInput)
+    if (formValues.title !== entries[0].title){
+    addEntry(formValues);
+    }
+
   }
 
   return (
@@ -29,7 +36,7 @@ export function Form() {
         <ShowImage srcInput={srcInput}/>
         <EntryInputs titleInput={titleInput} srcInput={srcInput} onTitleChange={(e) => setTitleInput(e.target.value)} onSrcChange={(e) => setSrcInput(e.target.value)} />
         </div>
-        <NoteInput />
+        <NoteInput textArea={textArea} setTextArea={(e) => setTextArea(e.target.value)}/>
         <Button />
       </form>
 
@@ -71,7 +78,7 @@ function EntryInputs({titleInput, srcInput, onTitleChange, onSrcChange }: EntryI
   );
 }
 
-function NoteInput() {
+function NoteInput({textArea, setTextArea}) {
   return (
     <div className="row margin-bottom-1">
       <div className="column-full">
@@ -84,7 +91,7 @@ function NoteInput() {
           name="formNotes"
           id="formNotes"
           cols={30}
-          rows={10}></textarea>
+          rows={10} value={textArea} onChange={setTextArea}></textarea>
       </div>
     </div>
   );
